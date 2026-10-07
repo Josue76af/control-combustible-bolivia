@@ -507,17 +507,32 @@ begin
     'movimiento_inventario','anulacion_carga','auditoria'
   ] loop
     execute format('alter table public.%I enable row level security', t);
-    execute format('revoke all on table public.%I from anon, authenticated', t);
+    if exists (select 1 from pg_roles where rolname = 'anon') then
+      execute format('revoke all on table public.%I from anon', t);
+    end if;
+    if exists (select 1 from pg_roles where rolname = 'authenticated') then
+      execute format('revoke all on table public.%I from authenticated', t);
+    end if;
   end loop;
 end $$;
 
-revoke execute on function public.limitar_vehiculos_activos() from public, anon, authenticated;
-revoke execute on function public.validar_intentos_huella() from public, anon, authenticated;
-revoke execute on function public.validar_detalle_offline() from public, anon, authenticated;
-revoke execute on function public.validar_carga() from public, anon, authenticated;
-revoke execute on function public.aplicar_movimiento_cupo() from public, anon, authenticated;
-revoke execute on function public.aplicar_movimiento_inventario() from public, anon, authenticated;
-revoke execute on function public.aplicar_anulacion_carga() from public, anon, authenticated;
+do $$
+declare fn text;
+begin
+  foreach fn in array array[
+    'limitar_vehiculos_activos', 'validar_intentos_huella',
+    'validar_detalle_offline', 'validar_carga', 'aplicar_movimiento_cupo',
+    'aplicar_movimiento_inventario', 'aplicar_anulacion_carga'
+  ] loop
+    execute format('revoke execute on function public.%I() from public', fn);
+    if exists (select 1 from pg_roles where rolname = 'anon') then
+      execute format('revoke execute on function public.%I() from anon', fn);
+    end if;
+    if exists (select 1 from pg_roles where rolname = 'authenticated') then
+      execute format('revoke execute on function public.%I() from authenticated', fn);
+    end if;
+  end loop;
+end $$;
 
 insert into public.combustible (nombre) values ('GASOLINA'), ('DIESEL');
 insert into public.parametro_sistema (codigo, valor, descripcion) values
