@@ -6,6 +6,7 @@ Esquema PostgreSQL para un taller académico sobre cargas de combustible, cupo s
 
 - `supabase/migrations/20261007024602_esquema_inicial_combustible.sql`: 27 tablas, relaciones, restricciones, índices, disparadores y parámetros iniciales.
 - `supabase/config.toml`: configuración local generada por Supabase CLI.
+- `consultas_ejemplo.sql`: consultas iniciales para explorar las tablas.
 
 ## Modelo
 
@@ -52,6 +53,17 @@ La base guarda resultados e historial, pero la verificación real de huellas, RU
 Los porcentajes de diferencia de inventario (1 % y 2 %) son **valores académicos configurables**, no una norma oficial. No se cargan precios reales; `precio_combustible` debe poblarse con fuentes vigentes y conservar los registros históricos.
 
 ## Despliegue
+
+### Consultar sin Supabase (Windows)
+
+1. Instala PostgreSQL con pgAdmin desde el [instalador oficial enlazado por PostgreSQL](https://www.postgresql.org/download/windows/). Anota la contraseña que configures para el usuario `postgres`.
+2. En pgAdmin, conecta el servidor local y crea una base vacía llamada `control_combustible`.
+3. Selecciona esa base, abre **Tools → Query Tool**, carga `supabase/migrations/20261007024602_esquema_inicial_combustible.sql` y ejecuta el script completo. La migración funciona también en PostgreSQL local; los roles específicos de Supabase son opcionales.
+4. Abre `consultas_ejemplo.sql` en Query Tool y ejecuta las consultas. Los resultados iniciales incluyen dos combustibles y parámetros configurables; las tablas de personas, vehículos y cargas empiezan vacías.
+
+Usa el servidor local como `postgres` para administrar este esquema de taller. RLS está activo y no hay políticas para usuarios de aplicación.
+
+### Publicar en Supabase
 
 Con Supabase CLI autenticado y el proyecto remoto ya creado:
 
