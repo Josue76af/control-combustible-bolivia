@@ -242,9 +242,12 @@ create table public.carga_detalle (
 create function public.validar_detalle_offline() returns trigger
 language plpgsql set search_path = '' as $$
 declare carga_actual public.carga%rowtype;
+        carga_id bigint;
 begin
+  if tg_op = 'DELETE' then carga_id := old.id_carga;
+  else carga_id := new.id_carga; end if;
   select * into carga_actual from public.carga
-    where id_carga = coalesce(new.id_carga, old.id_carga) for update;
+    where id_carga = carga_id for update;
   if carga_actual.estado = 'COMPLETADA' then
     raise exception 'No se puede cambiar el detalle de una carga completada';
   end if;
