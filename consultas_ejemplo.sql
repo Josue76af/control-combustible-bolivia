@@ -1,12 +1,10 @@
--- Ejecuta una consulta a la vez en pgAdmin Query Tool.
 
--- Ver las 27 tablas del modelo.
 select table_name
 from information_schema.tables
 where table_schema = 'public' and table_type = 'BASE TABLE'
 order by table_name;
 
--- Datos iniciales que sí incluye la migración.
+-- Datos iniciales que sí incluye la migración
 select id_combustible, nombre, estado
 from public.combustible
 order by id_combustible;
@@ -15,7 +13,7 @@ select codigo, valor, descripcion
 from public.parametro_sistema
 order by codigo;
 
--- Estas tablas estarán vacías hasta registrar datos de ejemplo.
+-- Estas tablas estarán vacías hasta registrar datos de ejemplo
 select id_persona, ci, nombres, apellidos, estado
 from public.persona
 order by id_persona;

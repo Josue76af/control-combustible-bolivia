@@ -1,5 +1,3 @@
--- Sistema académico de control de combustible. Tiempos en timestamptz (UTC en almacenamiento).
--- La semana del cupo se interpreta en America/La_Paz por la aplicación.
 
 create table public.persona (
   id_persona bigint generated always as identity primary key,
@@ -493,8 +491,6 @@ create table public.auditoria (
 create index auditoria_tabla_registro_fecha_idx
   on public.auditoria(tabla_afectada, id_registro, fecha_hora desc);
 
--- Las tablas contienen identidad, biometría y operaciones. Sin políticas RLS,
--- solo la conexión administrativa puede acceder a ellas.
 do $$
 declare t text;
 begin
