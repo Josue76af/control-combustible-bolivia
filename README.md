@@ -19,13 +19,17 @@ La arquitectura de la base de datos se diseñó procurando facilitar una futura 
 Para ejecutar la base de datos localmente se necesita:
 
 **Git:** Permite clonar el repositorio. Comprobar instalación:
+
 `git --version`
+
+
 **Docker:** Supabase ejecuta PostgreSQL y sus servicios mediante contenedores. Se recomienda utilizar Docker Desktop. Comprobar:
 `docker --version`
 >[!CAUTION] OJO
 >Docker debe encontrarse iniciado antes de ejecutar Supabase.
 
 **Supabase CLI:** Comprobar si está instalado.
+
 
 `supabase --version`
 
